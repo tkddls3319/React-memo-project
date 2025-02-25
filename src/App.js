@@ -1,75 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import MemoContainer from './components/MemoContainer';
+import SideBar from './components/SideBar';
 import { useState } from 'react';
-import TextInput from './components/TextInput.js';
-import Select from './components/Select.js';
-const contryOptions = ['한국', '중국', '미국', '일본'];
 
 function App() {
-  const [formValue, setFormValue] = useState({
-    name: '',
-    contry: '',
-    address: '',
-  });
+  const [memos, setMemos] = useState([
+    {
+      title: 'Memo 1',
+      content: 'this is memo1',
+      createdAt: 1740459712601,
+      updatedAt: 1740459712601,
+    },
+    {
+      title: 'Memo 2',
+      content: 'this is memo2',
+      createdAt: 1740459743113,
+      updatedAt: 1740459743113,
+    },
+  ]);
+
+  const [selectedMemoIndex, setSelectedMemoIndex] = useState(0);
+
+  const setMemo = (newMemo) => {
+    const newMemos = [...memos]; //useState으로 관리하는 객체는 불변성을 유지해야함 -> 새로운 객체 생성
+    newMemos[selectedMemoIndex] = newMemo;
+    setMemos(newMemos); //새로운 객체 생성
+  };
 
   return (
     <div className="App">
-      <div className="form">
-        <div className="form-item">
-          <h1>1. 이름이 무엇인가요?</h1>
-          <TextInput
-            value={formValue.name}
-            setValue={(value) => {
-              setFormValue((state) => ({
-                ...state,
-                name: value,
-              }));
-            }}
-          />
-        </div>
-        <div className="form-item">
-          <h1>2. 사는 곳은 어딘가요??</h1>
-          <Select
-            value={formValue.contry}
-            setValue={(value) => {
-              setFormValue((state) => ({
-                ...state,
-                name: value,
-              }));
-            }}
-            options={contryOptions}
-          />
-        </div>
-        {formValue.contry === '한국' && (
-          <div className="form-item">
-            <h1>2-1. 한국 어디에 사나요?</h1>
-            <TextInput
-              value={formValue.address}
-              setValue={() => {
-                setFormValue((state) => ({
-                  ...state,
-                  address: value,
-                }));
-              }}
-            />
-          </div>
-        )}
-        <div className="button-group">
-          <button
-            onClick={() => {
-              alert('저장되었습니다.');
-              setFormValue({
-                name: '',
-                contry: '',
-                address: '',
-              });
-            }}
-            disabled={!formValue.name || !formValue.contry}
-          >
-            저장
-          </button>
-        </div>
-      </div>
+      <SideBar
+        memos={memos}
+        selectedMemoIndex={selectedMemoIndex}
+        setSelectedMemoIndex={setSelectedMemoIndex}
+      />
+      <MemoContainer memo={memos[selectedMemoIndex]} setMemo={setMemo} />
     </div>
   );
 }
