@@ -1,41 +1,75 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import TextInput from './components/TextInput.js';
+import Select from './components/Select.js';
+const contryOptions = ['한국', '중국', '미국', '일본'];
 
 function App() {
-  const [value, setValue] = useState(0);
+  const [formValue, setFormValue] = useState({
+    name: '',
+    contry: '',
+    address: '',
+  });
 
   return (
     <div className="App">
-      <h1>value: {value}</h1>
-      <button
-        onClick={() => {
-          setValue(value + 1);
-        }}
-      >
-        Increase value
-      </button>
-      <button
-        onClick={() => {
-          setValue(0);
-        }}
-      >
-        Reset Value
-      </button>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="form">
+        <div className="form-item">
+          <h1>1. 이름이 무엇인가요?</h1>
+          <TextInput
+            value={formValue.name}
+            setValue={(value) => {
+              setFormValue((state) => ({
+                ...state,
+                name: value,
+              }));
+            }}
+          />
+        </div>
+        <div className="form-item">
+          <h1>2. 사는 곳은 어딘가요??</h1>
+          <Select
+            value={formValue.contry}
+            setValue={(value) => {
+              setFormValue((state) => ({
+                ...state,
+                name: value,
+              }));
+            }}
+            options={contryOptions}
+          />
+        </div>
+        {formValue.contry === '한국' && (
+          <div className="form-item">
+            <h1>2-1. 한국 어디에 사나요?</h1>
+            <TextInput
+              value={formValue.address}
+              setValue={() => {
+                setFormValue((state) => ({
+                  ...state,
+                  address: value,
+                }));
+              }}
+            />
+          </div>
+        )}
+        <div className="button-group">
+          <button
+            onClick={() => {
+              alert('저장되었습니다.');
+              setFormValue({
+                name: '',
+                contry: '',
+                address: '',
+              });
+            }}
+            disabled={!formValue.name || !formValue.contry}
+          >
+            저장
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
