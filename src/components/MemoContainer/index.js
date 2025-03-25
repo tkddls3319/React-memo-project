@@ -1,3 +1,4 @@
+import './index.css';
 function MemoContainer({ memo, setMemo }) {
   if (memo === undefined) {
     return (
@@ -26,7 +27,7 @@ function MemoContainer({ memo, setMemo }) {
       </div>
       <div>
         <textarea
-          className="MemoContainer__Content"
+          className="MemoContainer__content"
           value={memo.content}
           onChange={(e) => {
             setMemo({
